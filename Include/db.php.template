@@ -1,0 +1,10 @@
+<?php
+
+/* Adapt host, username, password & database */
+$host = 'host';
+$user = 'username';
+$password = 'password';
+$database = 'f1db';
+
+$conn = mysqli_connect($host, $user, $password, $database)
+        or die('Cannot connect to database!');
