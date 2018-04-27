@@ -7,20 +7,18 @@
  */
 class Circuit {
 
+    public $conn;
     public $id;
     public $name;
 
-    function __construct(mysqli $conn, int $id) {
+    function __construct(pdo $conn, int $id) {
+        $this->conn = $conn;
         $this->id = $id;
         $query = "SELECT name FROM circuits WHERE id=?";
-        $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, 'i', $id);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $name);
-        mysqli_store_result($conn);
-
-        while (mysqli_stmt_fetch($stmt)) {
-            $this->name = $name;
-        }
+        $stmt = $conn->prepare($query);
+        $stmt->bindValue(1, $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $this->name = $result['name'];
     }
 }

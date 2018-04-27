@@ -1,10 +1,13 @@
 <?php
 
-/* Adapt host, username, password & database */
-$host = 'host';
+/* Adapt host, database, charset, username & password */
+$host = 'localhost';
+$database = 'f1db';
+$charset = 'utf8mb4';
 $user = 'username';
 $password = 'password';
-$database = 'f1db';
 
-$conn = mysqli_connect($host, $user, $password, $database)
-        or die('Cannot connect to database!');
+$dsn = 'mysql:host=' . $host . ';dbname=' . $database . ';charset=' . $charset;
+
+$conn = new PDO($dsn, $user, $password)
+    or die('Cannot connect to database!');

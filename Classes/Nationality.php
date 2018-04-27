@@ -10,18 +10,14 @@ class Nationality {
     public $code;
     public $country;
 
-    function __construct($conn, $code) {
+    function __construct(pdo $conn, string $code) {
         $this->code = $code;
         $query = "SELECT country FROM nationalities WHERE code=?";
-        $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, 's', $code);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $country);
-        mysqli_store_result($conn);
-        
-        while (mysqli_stmt_fetch($stmt)) {
-            $this->country = $country;
-        }
-    }
+        $stmt =$conn->prepare($query);
+        $stmt->bindValue(1, $code, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        $this->country = $result['country'];
+    }
 }
