@@ -21,4 +21,16 @@ class Circuit {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         $this->name = $result['name'];
     }
+
+    function getRaces(): int {
+        $query = "SELECT count(*) as count FROM races WHERE circuit_id=?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(1, $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $races = (is_null($result['count']) ? 0 : $result['count']);
+
+        return $races;
+    }
 }
